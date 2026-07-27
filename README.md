@@ -58,6 +58,7 @@ Since different Spark amps may use varying Internal Model IDs, you might need to
 ## 📜 Credits & Acknowledgments
 This project uses research and protocol documentation from the following open-source projects:
 * **[SparkMIDI](https://github.com/paulhamsh/SparkMIDI)** — for the original Sysex command structures.
+* **[spark-go-utils](https://github.com/lucanenni/spark-go-utils)** - Spark GO Project (python & web).
 
 ## ⚖️ Legal Disclaimer & Safety
 
