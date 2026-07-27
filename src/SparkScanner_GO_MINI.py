@@ -12,17 +12,19 @@ from tkinter import ttk, messagebox
 
 # Configuration
 WRITE_UUID = "0000ffc1-0000-1000-8000-00805f9b34fb"
+NOTIFY_HANDLE = 0x0007
+WRITE_HANDLE = 0x000A
 SPARK_MAC_PREFIXES = ["F7:EB:ED", "08:EB:ED"] 
 
 class SparkMidiApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Spark MIDI Bridge July v0.0.4")
+        self.root.title("Spark MIDI Bridge July v0.0.5 (GO/MINI Fix)")
         self.root.geometry("600x450")
         self.root.configure(bg="#f5f5f5")
         
         self.spark_client = None
-        self.seq = 0 
+        self.seq = 0x20
         self.is_go_model = False 
         self.is_mini_model = False
         
@@ -38,8 +40,7 @@ class SparkMidiApp:
         UNIVERSAL PACKET BUILDER.
         Uses standard 9-zero padding for BLE header.
         """
-        self.seq = (self.seq + 1) % 0x80
-        if self.seq == 0: self.seq = 1
+        self.seq = (self.seq + 1) & 0xFF
         
         payload = [0xf0, 0x01, self.seq] + cmd_bytes + [0xf7]
         zeros = [0x00] * 9
@@ -53,7 +54,7 @@ class SparkMidiApp:
     def setup_ui(self):
         main = tk.Frame(self.root, bg="#f5f5f5")
         main.pack(expand=True, fill="both")
-        tk.Label(main, text="SPARK MIDI BRIDGE July v0.0.4", font=("Arial", 14, "bold"), bg="#f5f5f5", fg="#333").pack(pady=10)
+        tk.Label(main, text="SPARK MIDI BRIDGE July v0.0.5", font=("Arial", 14, "bold"), bg="#f5f5f5", fg="#333").pack(pady=10)
         
         st_frame = tk.Frame(main, bg="#f5f5f5")
         st_frame.pack(pady=5)
@@ -84,18 +85,18 @@ class SparkMidiApp:
     async def send_to_spark(self, btn_id):
         if self.spark_client and self.spark_client.is_connected:
             if self.is_go_model or self.is_mini_model:
-                # For Spark GO and MINI: use command [btn_id, 0x01, 0x38, 0x00, 0x00, btn_id]
+                # For Spark GO and MINI: use command [btn_id, 0x01, 0x38, 0x00, 0x00, btn_id] and write handle 0x000A
                 data = [btn_id, 0x01, 0x38, 0x00, 0x00, btn_id]
                 pkt = self.build_spark_packet(data)
                 mode_name = "GO" if self.is_go_model else "MINI"
                 self.log(f"{mode_name} Mode: Sending Preset {btn_id+1}")
+                await self.spark_client.write_gatt_char(WRITE_HANDLE, pkt, response=False)
             else:
                 # For Spark 40 / Spark 2
                 data = [0x15, 0x01, 0x38, 0x00, 0x00, btn_id]
                 pkt = self.build_spark_packet(data)
                 self.log(f"40/2 Mode: Sending Preset {btn_id+1}")
-                
-            await self.spark_client.write_gatt_char(WRITE_UUID, pkt, response=False)
+                await self.spark_client.write_gatt_char(WRITE_UUID, pkt, response=False)
 
     async def spark_search_loop(self):
         while True:
@@ -117,15 +118,18 @@ class SparkMidiApp:
                         model_name = "GO" if self.is_go_model else ("MINI" if self.is_mini_model else "40/2")
                         self.spark_lbl.config(text=f"SPARK {model_name}: ONLINE", fg="#27ae60")
                         
-                        self.seq = 0
-                        self.log("Sending Handshake...")
+                        self.seq = 0x20
                         
-                        # Handshake: all models use 9 zeros
                         if self.is_go_model or self.is_mini_model:
-                            await self.spark_client.write_gatt_char(WRITE_UUID, self.build_spark_packet([0x00, 0x02, 0x2f]), response=False)
-                            await asyncio.sleep(0.1)
-                            await self.spark_client.write_gatt_char(WRITE_UUID, self.build_spark_packet([0x00, 0x02, 0x23]), response=False)
+                            def notification_handler(sender, data: bytearray):
+                                pass
+                            try:
+                                await self.spark_client.start_notify(NOTIFY_HANDLE, notification_handler)
+                                self.log("Notifications started (0x0007).")
+                            except Exception as ne:
+                                self.log(f"Notify init error: {ne}")
                         else:
+                            self.log("Sending Handshake...")
                             await self.spark_client.write_gatt_char(WRITE_UUID, self.build_spark_packet([0x00, 0x02, 0x23]), response=False)
                             await asyncio.sleep(0.1)
                             await self.spark_client.write_gatt_char(WRITE_UUID, self.build_spark_packet([0x00, 0x02, 0x10]), response=False)
