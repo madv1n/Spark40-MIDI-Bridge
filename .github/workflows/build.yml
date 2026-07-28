@@ -1,40 +1,27 @@
-name: Build Multiplatform Executables
+name: Build macOS Executable
 
 on:
   workflow_dispatch:
 
 jobs:
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - run: |
-          python -m pip install --upgrade pip
-          pip install bleak pygame pyinstaller
-      - run: |
-          pyinstaller --noconfirm --onefile --windowed --name "SparkMidiBridge_v1.2.0_Windows" "Spark Midi Bridge 1.2.0/SparkMidiBridge_v1.2.0.py"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: SparkMidiBridge_Windows
-          path: dist/SparkMidiBridge_v1.2.0_Windows.exe
-
   build-macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - run: |
           python3 -m pip install --upgrade pip
           pip3 install bleak pygame pyinstaller
+
       - run: |
-          pyinstaller --noconfirm --onedir --windowed --name "SparkMidiBridge" "Spark Midi Bridge 1.2.0/SparkMidiBridge_v1.2.0.py"
+          pyinstaller --noconfirm --onedir --windowed --name "SparkMidiBridge" "src/1.2.0. Spark 40, Spark 2, Spark Go/SparkMidiBridge_v1.2.0.py"
           cd dist
           zip -r SparkMidiBridge_v1.2.0_macOS.zip SparkMidiBridge.app
+
       - uses: actions/upload-artifact@v4
         with:
           name: SparkMidiBridge_macOS
