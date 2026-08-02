@@ -43,10 +43,10 @@ For **`macOS`** `In work`
 | **Spark 40** | ✅ Working | Fully tested by developer |
 | **Spark 2** | ✅ Working | Supports preset switching |
 | **Spark MINI** | ⏳ Testing | Need more data |
-| **Spark GO** | ⏳ Testing | Need more data |
+| **Spark GO** | ✅ Working | Supports preset switching |
 
 ## 🧪 How to Help
-If you own a **MINI, or GO**, you can help even if you don't have a MIDI pedal.
+If you own a **MINI**, you can help even if you don't have a MIDI pedal.
 
 Since different Spark amps may use varying Internal Model IDs, you might need to calibrate the communication profile:
 
