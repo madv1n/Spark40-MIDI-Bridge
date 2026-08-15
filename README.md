@@ -46,7 +46,7 @@ A lightweight, one-click utility to connect any MIDI controller to `Positive Gri
 | **Spark GO** | ✅ Working | Supports preset switching |
 
 ## 🧪 How to Help
-Test for the**MINI** required. In not working, please [Open an Issue](https://github.com/madv1n/Spark-MIDI-Bridge/issues) or report the results here: `rnp.forge@gmail.com`
+If you are the owner of a **MINI** amp, please test the latest release. If not working - please [Open an Issue](https://github.com/madv1n/Spark-MIDI-Bridge/issues) or report the results here: `rnp.forge@gmail.com`
 
 ## 📜 Credits & Acknowledgments
 This project uses research and protocol documentation from the following open-source projects:
