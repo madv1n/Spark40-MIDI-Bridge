@@ -33,7 +33,7 @@ A lightweight, one-click utility to connect any MIDI controller to `Positive Gri
 5. Easy Mapping (Learn Mode) - Click the LEARN button under any preset and press the physical button on your MIDI controller to link them instantly. This allows you to use your pedal’s current settings without any hardware reconfiguration. (Note: Click SAVE CONFIGURATION to store your custom layout permanently).
 6. **Done:** Wait for `SPARK: ONLINE` and `PEDAL: READY`.
 
-For **`macOS`** `In work`
+**`macOS`** build created but `not tested`
 
 ## 🛠 Hardware Compatibility
 *I am actively looking for testers for other models!*
@@ -46,15 +46,7 @@ For **`macOS`** `In work`
 | **Spark GO** | ✅ Working | Supports preset switching |
 
 ## 🧪 How to Help
-If you own a **MINI**, you can help even if you don't have a MIDI pedal.
-
-Since different Spark amps may use varying Internal Model IDs, you might need to calibrate the communication profile:
-
-1. Download and launch `SparkScanner.exe`.
-2. Run the application and verify the status shows `SPARK: ONLINE`.
-3. Click `START SCAN`. The utility will cycle through known protocol layers to find a match for your specific hardware.
-4. Wait until presets start switching. Once they toggle, press `STOP`. The utility will lock the identified Model ID for your configuration.
-5. Please [Open an Issue](https://github.com/madv1n/Spark-MIDI-Bridge/issues) and tell me which protocols are changing the presets or report the results here: `rnp.forge@gmail.com`
+Test for the**MINI** required. In not working, please [Open an Issue](https://github.com/madv1n/Spark-MIDI-Bridge/issues) or report the results here: `rnp.forge@gmail.com`
 
 ## 📜 Credits & Acknowledgments
 This project uses research and protocol documentation from the following open-source projects:
@@ -74,5 +66,4 @@ This software is provided "as is" under the **GPL-3.0 License**, without warrant
 ## Support my project
 If this tool helps you, you can support further development:
 
-<a href="https://www.buymeacoffee.com/pk_rpforge" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 36px; !important;" ></a>
 <a href='https://ko-fi.com/Z8Z01XS6B0' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi2.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
